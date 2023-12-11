@@ -1,0 +1,45 @@
+-- Active: 1700030955398@@127.0.0.1@3306@kin-iway
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    user_type ENUM('student', 'instructor') NOT NULL
+);
+
+--Student Table
+CREATE TABLE Student (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    full_name VARCHAR(100) NOT NULL,
+    date_of_birth DATE,
+    contact_number VARCHAR(20),
+    email VARCHAR(100),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+--Course Table
+CREATE TABLE Course (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_name VARCHAR(100) NOT NULL,
+    course_code VARCHAR(20) NOT NULL UNIQUE
+);
+
+--Instructor Table
+CREATE TABLE Instructor (
+    instructor_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    full_name VARCHAR(100) NOT NULL,
+    contact_number VARCHAR(20),
+    email VARCHAR(100),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+--Enrollment Table
+CREATE TABLE Enrollment (
+    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    enrollment_date DATE,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+);
